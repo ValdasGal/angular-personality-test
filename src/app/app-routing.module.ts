@@ -1,10 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-const routes: Routes = [];
+// Even if the app is very small, lazy load it's modules.
+const routes: Routes = [
+  { path: '', loadChildren: () => import('./landing/landing.module').then((m) => m.LandingModule) },
+  { path: 'survey', loadChildren: () => import('./survey/survey.module').then((m) => m.SurveyModule) },
+  { path: 'complete', loadChildren: () => import('./complete/complete.module').then(m => m.CompleteModule) }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
