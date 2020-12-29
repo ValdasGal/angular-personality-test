@@ -8,9 +8,9 @@ import { PersonalityType } from '../shared/models/personalityType.interface';
   styleUrls: ['./complete.component.scss']
 })
 export class CompleteComponent implements OnInit {
-  constructor(private activatedRoute: ActivatedRoute) {}
-
   personalityType: PersonalityType = PersonalityType.introvert;
+
+  constructor(private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.personalityType = this.activatedRoute.snapshot.params.personality;

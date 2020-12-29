@@ -10,8 +10,6 @@ import { PersonalityType } from '../shared/models/personalityType.interface';
   styleUrls: ['./survey.component.scss']
 })
 export class SurveyComponent implements OnInit {
-  constructor(private surveyService: SurveyService, private router: Router) {}
-
   isLoadingSurvey = false;
   questions: Question[] = [];
   currentQuestionIndex = 0;
@@ -20,7 +18,9 @@ export class SurveyComponent implements OnInit {
   // In "real world" this value should be calculated by backend.
   surveyValue = 0;
 
-  get isLastQuestion() {
+  constructor(private surveyService: SurveyService, private router: Router) {}
+
+  get isLastQuestion(): boolean {
     return this.questions.length - 1 === this.currentQuestionIndex;
   }
 
@@ -28,7 +28,7 @@ export class SurveyComponent implements OnInit {
     this.getSurveyQuestions();
   }
 
-  getSurveyQuestions() {
+  getSurveyQuestions(): void {
     this.isLoadingSurvey = true;
 
     this.surveyService
@@ -41,18 +41,22 @@ export class SurveyComponent implements OnInit {
       });
   }
 
-  answerQuestion(event: number) {
+  answerQuestion(event: number): void {
     this.surveyValue = this.surveyValue + event;
 
     if (!this.isLastQuestion) {
       this.nextQuestion();
     } else {
-      const personalityType = this.surveyValue < 0 ? PersonalityType.extravert : PersonalityType.introvert;
-      this.router.navigateByUrl(`/complete/${personalityType}`);
+      this.navigateToCompletePage();
     }
   }
 
-  nextQuestion() {
+  nextQuestion(): void {
     this.currentQuestionIndex++;
+  }
+
+  navigateToCompletePage(): void {
+    const personalityType = this.surveyValue < 0 ? PersonalityType.extravert : PersonalityType.introvert;
+    this.router.navigateByUrl(`/complete/${personalityType}`);
   }
 }
